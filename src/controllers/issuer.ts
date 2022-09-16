@@ -1,8 +1,37 @@
 import { Request, Response, NextFunction } from 'express';
 import axios, { AxiosResponse } from 'axios';
+import { msalCca, msalClientCredentialRequest } from '../msal'
+
+async function getAccessToken(): Promise<string> {
+  // get the Access Token
+   var accessToken = "";
+   try {
+     const cca: any = new msalCca();
+     const clientCredentialRequest = msalClientCredentialRequest;
+
+     const result = await cca.acquireTokenByClientCredential(clientCredentialRequest);
+     if ( result ) {
+       accessToken = result.accessToken;
+     }
+   } catch {
+     console.log( "failed to get access token" );
+     return "";
+   }  
+   return accessToken
+}
 
 const getIssuanceRequest = async (req: Request, res: Response, next: NextFunction) => {
-    
+    const accessToken = await getAccessToken();
+    if (!accessToken)
+    {
+        res.status(401).json({
+            'error': 'Could not acquire credentials to access your Azure Key Vault'
+        });  
+      return;
+    }
+
+    console.log( `accessToken: ${accessToken}` );
+
     const url = `https://verifiedid.did.msidentity.com/v1.0/verifiableCredentials/createIssuanceRequest`
     const result: void | AxiosResponse<any, any> = await axios.post(url)
       .catch(function (error) {
