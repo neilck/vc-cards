@@ -1,4 +1,6 @@
 {
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
      // "target": "es2018",
   "target": "es6",
@@ -6,10 +8,10 @@
   "emitDecoratorMetadata": true,
   "experimentalDecorators": true,
   "module": "commonjs",
-  "rootDir": "src",
+  "rootDir": "./src",
     //  "resolveJsonModule": true,
     //  "allowJs": true,
-  "outDir": "build",
+  "outDir": "./build",
   "esModuleInterop": true,
   "forceConsistentCasingInFileNames": true,
   "strict": true,

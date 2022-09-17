@@ -11,4 +11,9 @@ export class Product {
    @Column()
    description: string
 
+   constructor() {
+      this.id = 0;
+      this.sku = "";
+      this.description = "";
+   }
 }

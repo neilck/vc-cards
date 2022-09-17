@@ -4,24 +4,24 @@ import { msalCca, msalClientCredentialRequest } from '../msal'
 
 async function getAccessToken(): Promise<string> {
   // get the Access Token
-   var accessToken = "";
-   try {
-     const cca: any = new msalCca();
-     const clientCredentialRequest = msalClientCredentialRequest;
+  var accessToken = "";
+  
+  const result = await msalCca.acquireTokenByClientCredential(msalClientCredentialRequest).catch(function (error: any) {
+      console.log(error);
+  })
 
-     const result = await cca.acquireTokenByClientCredential(clientCredentialRequest);
-     if ( result ) {
-       accessToken = result.accessToken;
-     }
-   } catch {
-     console.log( "failed to get access token" );
-     return "";
-   }  
+  if ( result ) {
+    accessToken = result.accessToken;
+  }
+  
    return accessToken
 }
 
 const getIssuanceRequest = async (req: Request, res: Response, next: NextFunction) => {
-    const accessToken = await getAccessToken();
+    const accessToken = await getAccessToken().catch(function (error) {
+      console.log(error);
+    })
+
     if (!accessToken)
     {
         res.status(401).json({
@@ -33,8 +33,8 @@ const getIssuanceRequest = async (req: Request, res: Response, next: NextFunctio
     console.log( `accessToken: ${accessToken}` );
 
     const url = `https://verifiedid.did.msidentity.com/v1.0/verifiableCredentials/createIssuanceRequest`
-    const result: void | AxiosResponse<any, any> = await axios.post(url)
-      .catch(function (error) {
+    const result: void | AxiosResponse<any, any> = await axios.post(url).catch
+    (function (error) {
         if (error.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
@@ -53,11 +53,14 @@ const getIssuanceRequest = async (req: Request, res: Response, next: NextFunctio
           console.log(error.config);
         });
       
-
+    
     // return response
     return res.status(200).json({
         message: "Okay"
     });
+
+    const callback = `https://${req.hostname}/issuance-request-callback`;
+
 };
 
 export default {getIssuanceRequest}
