@@ -1,6 +1,6 @@
 import { ClaimsRequestKeys } from '@azure/msal-common';
 import { stringify } from 'querystring';
-import {IIssuanceRequest, ICallback, IRequestRegistration, IPin} from '../src/entity/IIssuanceRequest';
+import { IIssuanceRequest } from  '../src/entity/IIssuanceConfig'
 
 describe("testing Issuance Request class", () => {
   const res: IIssuanceRequest = new Object();
@@ -29,9 +29,8 @@ describe("testing Issuance Request class", () => {
 
   it("checking against issuance_request_config.json", () => {
     // console.log(res)
-    expect(res).toEqual( issuanceConfig );
-  }); 
-
+        expect(res).toEqual( issuanceConfig );
+  })
 }); 
 
 /* describe("test callback call", () => {

@@ -1,6 +1,6 @@
 import { type } from "os";
 
-export interface IIssuanceRequest {
+export interface IIssuanceConfig {
     includeQRCode?: boolean;   // Determines whether a QR code is included in the response of this request
     callback?:       ICallback;  // Mandatory. Allows the developer to asynchronously get information on the flow during the verifiable credential issuance process
     authority?:      string;    // The issuer's decentralized identifier (DID).  
@@ -31,72 +31,4 @@ export interface IPin {
     alg?:            string;     // The hashing algorithm for the hashed PIN. Supported algorithm: sha256.
     iterations?:     number;     // The number of hashing iterations. Possible value: 1.
 }
-
-/* export class IssuanceRequest  {
-    includeQRCode?: boolean;
-    callback:       Callback;
-    authority:      string;
-    registration:   RequestRegistration;
-    type:           string;
-    manifest:       string;
-    claims:         any[];
-    pin:            object;
- 
-    constructor()
-    {
-        this.includeQRCode = true;
-        this.callback = new Callback();
-        this.authority = "";
-        this.registration = new RequestRegistration();
-        this.type = "";
-        this.manifest = "";
-        this.claims = [];
-        this.pin = new Pin();
-    }
-
-}
-
-export class Callback implements ICallback {
-    url:            string;     
-    state:          string;     
-    headers:        any[];
-
-    constructor()
-    {
-        this.url = "";
-        this.state = "";
-        this.headers = [];
-    }
-}
-
-export class RequestRegistration implements IRequestRegistration
-{
-    clientName:         string;
-    logoUrl?:            string;
-    termsOfServiceUrl?:  string;
-
-    constructor()
-    {
-        this.clientName = "";
-    }
-}
-
-export class Pin implements IPin
-{
-    value:      string;
-    type:       string;
-    length:     number;
-    salt:       string;
-    alg:        string;
-    iterations: number;
-
-    constructor() {
-        this.value = "";
-        this.type = "";
-        this.length = 6;
-        this.salt = "";
-        this.alg = "";
-        this.iterations = 1;
-    }
-} */
 

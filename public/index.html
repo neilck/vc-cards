@@ -1,0 +1,72 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+
+     <html>
+        <head>
+            <meta charset="utf-8">
+            <title>Issuer Test</title>
+            <meta name="description" content="Verifiable Credentials Expert">
+            <meta name="author" content="Microsoft">
+            <link rel="stylesheet" href="styles.css">
+            <link rel="icon" href="favicon.png">
+          
+        </head>    
+        <body>
+            <div id="wrap">
+
+                <div style="text-align: center;">
+                    <h1>Verifiable Credential Expert Issuance and Verifier Sample</h1>
+                    Membership ID <br>
+                    <input type="text" value="001234" id="membershipID"  size="20"><br>
+                    Alias <br>
+                    <input type="text" value="TwitterDev" id="alias"  size="20"><br>
+                    Followers <br>
+                     <input type="text" value="1024" id="followers_count"  size="20"><br>
+                    Tweets <br>
+                    <input type="text" value="128" id="post_count"  size="20"><br>
+                    Member Since <br>
+                    <input type="text" value="2020-01-01" id="created_at"  size="20"><br>
+                    Verified Account <br>
+                    <input type="text" value="false" id="verified"  size="20"><br>
+                    <button type="button" id="idIssue" class="button">GET CREDENTIAL</button>
+                    <p>
+                        <div id="qrcode" style="text-align: center"></div>
+                    </p>
+                </div>
+            </div>
+            <script src="qrcode.min.js"></script>
+            <script>
+                var qrcode = new QRCode("qrcode", { width: 300, height: 300 });
+                
+                const data = {};
+                data.issueRequest = {};
+                data.issueRequest.id = "1";
+                data.issueRequest.timestamp = Date.now().toString();
+                data.membershipID = document.getElementById('membershipID').value;
+                data.alias = document.getElementById('alias').value;
+                data.followers_count = document.getElementById('followers_count').value;
+                data.post_count = document.getElementById('post_count').value;
+                data.created_at = document.getElementById('created_at').value;
+                data.verified = document.getElementById('verified').value;
+
+                var idIssue = document.getElementById('idIssue');
+                var respIssuanceReq = null;
+                idIssue.addEventListener('click', () => {
+                    fetch('/api/issueCardRequest', {
+                        method: 'post',
+                        body: JSON.stringify(data),
+                        headers: {'Content-Type': 'application/json'}
+                    })
+                    .then(function(response) {
+                        response.text()
+                        .catch(error => { console.log(error); })
+                        .then(function(message) {
+                            var respIssuanceReq = JSON.parse(message);
+                            console.log("making QR Code: " + respIssuanceReq.url)
+                            qrcode.makeCode(respIssuanceReq.url);
+                        })
+                    })
+                })
+            </script>
+        </body>
+    </html>

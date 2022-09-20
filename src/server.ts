@@ -3,7 +3,8 @@ import http from 'http'
 import express, { Express, Request, Response, NextFunction } from 'express'
 import { AppDataSource } from "./data-source"
 import issuer from "./routes/issuer"
-
+// import card from "./routes/card"
+import cardController from "./controllers/card"
 
 function requestTrace( req: Request, res: Response, next: NextFunction ) {
   var dateFormatted = new Date().toISOString().replace("T", " ");
@@ -17,9 +18,18 @@ function requestTrace( req: Request, res: Response, next: NextFunction ) {
 const router: Express = express()
 dotenv.config()
 
+
 /** Routers (called in order) */
 router.use('/', requestTrace)
-router.use('/', issuer)
+// router.use('/api', card)
+
+
+// router.post('/api/issueCardRequest', function requestHandler(req, res) { res.send('ok'); });
+router.post('/api/issueCardRequest', cardController.issueCardRequest);
+router.use(express.static('public'))  
+
+// router.use('/', issuer)
+
 
 /** Error handling */
 router.use((req, res, next) => {
